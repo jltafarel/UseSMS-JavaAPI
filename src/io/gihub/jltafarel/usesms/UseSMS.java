@@ -22,7 +22,7 @@ public class UseSMS {
 	 * Requisita o token de autenticação para acesso. O token tem duração de 10
 	 * minutos.
 	 * 
-	 * @return {@link String}
+	 * @return {@link String} Token de autenticação.
 	 * @throws URISyntaxException
 	 * @throws HttpException
 	 * @throws IOException
@@ -43,13 +43,23 @@ public class UseSMS {
 
 		return result;
 	}
-	
-	public static String ping(String tokenSessao) throws URISyntaxException, HttpException, IOException{
+
+	/**
+	 * Mantém a sessão ativa por mais 10 minutos.
+	 * 
+	 * @param tokenSessao
+	 * @return {@link String}
+	 * @throws URISyntaxException
+	 * @throws HttpException
+	 * @throws IOException
+	 */
+
+	public static String ping(String tokenSessao) throws URISyntaxException, HttpException, IOException {
 		String requestPath = path + "/api/ping";
-		
+
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("id_sessao", tokenSessao));
-		
+
 		HttpResponse response = HTTPClient.post(requestPath, params);
 		HttpEntity entity = response.getEntity();
 		String result;
@@ -57,6 +67,33 @@ public class UseSMS {
 		result = U.getStringFromInputStream(entity.getContent());
 
 		return result;
+	}
 
+	/**
+	 * Envia o SMS.
+	 * 
+	 * @param tokenSessao
+	 * @param telephone
+	 * @param message
+	 * @return {@link String} ID da mensagem.
+	 * @throws URISyntaxException
+	 * @throws HttpException
+	 * @throws IOException
+	 */
+	public static String sendSMS(String tokenSessao, String telephone, String message) throws URISyntaxException, HttpException, IOException {
+		String requestPath = path + "/api/envia_sms";
+
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("id_sessao", tokenSessao));
+		params.add(new BasicNameValuePair("telefone", telephone));
+		params.add(new BasicNameValuePair("mensagem", message));
+
+		HttpResponse response = HTTPClient.post(requestPath, params);
+		HttpEntity entity = response.getEntity();
+		String result;
+
+		result = U.getStringFromInputStream(entity.getContent());
+
+		return result;
 	}
 }

@@ -17,11 +17,8 @@ public class Test {
 		String token;
 
 		try {
-			token = UseSMS.getAuthToken();
-			System.out.println(token);
-			Thread.sleep(15000);
-			System.out.println(UseSMS.ping(token));
-		} catch (URISyntaxException | HttpException | IOException | InterruptedException e) {
+			System.out.println(UseSMS.sendSMS("wQ6kL1AzXeZIxr6W15bM", "4691342327", "Teste no java"));
+		} catch (URISyntaxException | HttpException | IOException e) {
 			e.printStackTrace();
 		}
 	}
