@@ -96,4 +96,57 @@ public class UseSMS {
 
 		return result;
 	}
+
+	/**
+	 * Busca o status de uma mensagem.
+	 * 
+	 * @param sessionToken
+	 * @param messageId
+	 * @return {@link String}
+	 * @throws URISyntaxException
+	 * @throws HttpException
+	 * @throws IOException
+	 */
+	public static String getMessageStatus(String sessionToken, String messageId) throws URISyntaxException, HttpException, IOException {
+		String requestPath = path + "/api/status";
+
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("id_sessao", sessionToken));
+		params.add(new BasicNameValuePair("id_mensagem", messageId));
+
+		HttpResponse response = HTTPClient.post(requestPath, params);
+		HttpEntity entity = response.getEntity();
+		String result;
+
+		result = U.getStringFromInputStream(entity.getContent());
+
+		return result;
+	}
+
+	/**
+	 * Cancela o envio de uma mensagem.
+	 * 
+	 * @param sessionToken
+	 * @param messageId
+	 * @return
+	 * @throws URISyntaxException
+	 * @throws HttpException
+	 * @throws IOException
+	 */
+
+	public static String cancelMessage(String sessionToken, String messageId) throws URISyntaxException, HttpException, IOException {
+		String requestPath = path + "/api/saldo";
+
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("id_sessao", sessionToken));
+		params.add(new BasicNameValuePair("id_mensagem", messageId));
+
+		HttpResponse response = HTTPClient.post(requestPath, params);
+		HttpEntity entity = response.getEntity();
+		String result;
+
+		result = U.getStringFromInputStream(entity.getContent());
+
+		return result;
+	}
 }
