@@ -13,21 +13,28 @@ Como usar:
 	Config.getInstance().setPassword("password);
 	
 * Requisite o token de autenticação (o token tem validade de 10 minutos):
-```
+```java
 	
 	UseSMS.getAuthToken();
 	
-* Para renovar a sessão por mais 10 minutos, use o ping:
 ```
+	
+* Para renovar a sessão por mais 10 minutos, use o ping:
+```java
 
 	UseSMS.ping(token);
 
-* Envie um SMS. Este método retorna um ID único para a mensagem:
 ```
+
+* Envie um SMS. Este método retorna um ID único para a mensagem:
+```java
 
 	UseSMS.sendSMS(token, telefone, mensagem);
 	
-* Busque o status de uma mensagem:
 ```
+	
+* Busque o status de uma mensagem:
+```java
 
 	UseSMS.getMessageStatus(token, id_mensagem);
+```
