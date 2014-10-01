@@ -8,9 +8,12 @@ Como usar:
 
 * Compile o jar.
 * Faça a configuração do seu usuário do UseSMS:
+```java
 
 	Config.getInstance().setUsername("username");
 	Config.getInstance().setPassword("password);
+	
+```
 	
 * Requisite o token de autenticação (o token tem validade de 10 minutos):
 ```java
