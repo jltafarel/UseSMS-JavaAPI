@@ -99,7 +99,20 @@ public class UseSMS {
 		return result;
 	}
 
-	public static String sendSMSWithScheduling(String tokenSessao, String telephone, String message, Date date) throws URISyntaxException, HttpException, IOException {
+	/**
+	 * Agenda o envio de SMS.
+	 * 
+	 * @param tokenSessao
+	 * @param telephone
+	 * @param message
+	 * @param scheduleDate
+	 * @return {@link String} ID da mensagem.
+	 * @throws URISyntaxException
+	 * @throws HttpException
+	 * @throws IOException
+	 */
+
+	public static String sendSMSWithScheduling(String tokenSessao, String telephone, String message, Date scheduleDate) throws URISyntaxException, HttpException, IOException {
 		String requestPath = path + "/api/envia_sms";
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hh:mm:ss");
@@ -108,7 +121,7 @@ public class UseSMS {
 		params.add(new BasicNameValuePair("id_sessao", tokenSessao));
 		params.add(new BasicNameValuePair("telefone", telephone));
 		params.add(new BasicNameValuePair("mensagem", message));
-		params.add(new BasicNameValuePair("data_envio", sdf.format(date)));
+		params.add(new BasicNameValuePair("data_envio", sdf.format(scheduleDate)));
 
 		HttpResponse response = HTTPClient.post(requestPath, params);
 		HttpEntity entity = response.getEntity();
@@ -146,7 +159,7 @@ public class UseSMS {
 	}
 
 	/**
-	 * Cancela o envio de uma mensagem.
+	 * Cancela o envio de uma mensagem agendada.
 	 * 
 	 * @param sessionToken
 	 * @param messageId
@@ -157,7 +170,7 @@ public class UseSMS {
 	 */
 
 	public static String cancelMessage(String sessionToken, String messageId) throws URISyntaxException, HttpException, IOException {
-		String requestPath = path + "/api/saldo";
+		String requestPath = path + "/api/cancela_mensagem";
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair("id_sessao", sessionToken));
@@ -170,6 +183,31 @@ public class UseSMS {
 		result = U.getStringFromInputStream(entity.getContent());
 
 		return result;
+	}
+	
+	/**
+	 * Consulta os créditos disponíveis.
+	 * 
+	 * @param sessionToken
+	 * @return {@link Integer} Numero de créditos
+	 * @throws URISyntaxException
+	 * @throws HttpException
+	 * @throws IOException
+	 */
+
+	public static Integer getCredits(String sessionToken) throws URISyntaxException, HttpException, IOException {
+		String requestPath = path + "/api/saldo";
+
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("id_sessao", sessionToken));
+
+		HttpResponse response = HTTPClient.post(requestPath, params);
+		HttpEntity entity = response.getEntity();
+		String result;
+
+		result = U.getStringFromInputStream(entity.getContent());
+
+		return Integer.parseInt(result);
 	}
 
 }
