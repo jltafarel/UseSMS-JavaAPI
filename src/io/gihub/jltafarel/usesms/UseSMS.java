@@ -5,7 +5,9 @@ import io.gihub.jltafarel.util.U;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
@@ -97,6 +99,26 @@ public class UseSMS {
 		return result;
 	}
 
+	public static String sendSMSWithScheduling(String tokenSessao, String telephone, String message, Date date) throws URISyntaxException, HttpException, IOException {
+		String requestPath = path + "/api/envia_sms";
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hh:mm:ss");
+
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("id_sessao", tokenSessao));
+		params.add(new BasicNameValuePair("telefone", telephone));
+		params.add(new BasicNameValuePair("mensagem", message));
+		params.add(new BasicNameValuePair("data_envio", sdf.format(date)));
+
+		HttpResponse response = HTTPClient.post(requestPath, params);
+		HttpEntity entity = response.getEntity();
+		String result;
+
+		result = U.getStringFromInputStream(entity.getContent());
+
+		return result;
+	};
+
 	/**
 	 * Busca o status de uma mensagem.
 	 * 
@@ -149,4 +171,5 @@ public class UseSMS {
 
 		return result;
 	}
+
 }
