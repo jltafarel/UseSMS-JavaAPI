@@ -2,6 +2,8 @@ UseSMS-JavaAPI
 ==============
 
 API de acesso ao UseSMS. http://usesms.net.br/
+
+[Lista de erros][erros]
  
 Como usar:
 ---
@@ -41,3 +43,5 @@ Como usar:
 
 	UseSMS.getMessageStatus(token, id_mensagem);
 ```
+
+[erros]: https://github.com/jltafarel/UseSMS-JavaAPI/wiki/Significado-das-mensagens-lan%C3%A7adas-pelo-SMSException.
