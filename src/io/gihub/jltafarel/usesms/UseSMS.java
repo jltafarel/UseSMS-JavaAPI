@@ -228,7 +228,7 @@ public class UseSMS {
 	 * @throws IllegalStateException
 	 */
 
-	public static Integer getCredits(String sessionToken) throws URISyntaxException, HttpException, IOException, IllegalStateException, SMSException {
+	public static String getCredits(String sessionToken) throws URISyntaxException, HttpException, IOException, IllegalStateException, SMSException {
 		String requestPath = path + "/api/saldo";
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -241,7 +241,7 @@ public class UseSMS {
 		result = new Result(U.getStringFromInputStream(entity.getContent()));
 
 		if (result.isOK())
-			return Integer.parseInt(result.getMessage());
+			return result.getMessage();
 		else
 			throw new SMSException(result.getMessage());
 	}
