@@ -28,8 +28,10 @@ public class UseSMS {
 	 * @throws URISyntaxException
 	 * @throws HttpException
 	 * @throws IOException
+	 * @throws SMSException
+	 * @throws IllegalStateException
 	 */
-	public static String getAuthToken() throws URISyntaxException, HttpException, IOException {
+	public static String getAuthToken() throws URISyntaxException, HttpException, IOException, IllegalStateException, SMSException {
 		String requestPath = path + "/api/autenticar";
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -39,11 +41,14 @@ public class UseSMS {
 
 		HttpResponse response = HTTPClient.post(requestPath, params);
 		HttpEntity entity = response.getEntity();
-		String result;
+		Result result;
 
-		result = U.getStringFromInputStream(entity.getContent());
+		result = new Result(U.getStringFromInputStream(entity.getContent()));
 
-		return result;
+		if (result.isOK())
+			return result.getMessage();
+		else
+			throw new SMSException(result.getMessage());
 	}
 
 	/**
@@ -54,9 +59,11 @@ public class UseSMS {
 	 * @throws URISyntaxException
 	 * @throws HttpException
 	 * @throws IOException
+	 * @throws SMSException
+	 * @throws IllegalStateException
 	 */
 
-	public static String ping(String tokenSessao) throws URISyntaxException, HttpException, IOException {
+	public static String ping(String tokenSessao) throws URISyntaxException, HttpException, IOException, IllegalStateException, SMSException {
 		String requestPath = path + "/api/ping";
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -64,11 +71,14 @@ public class UseSMS {
 
 		HttpResponse response = HTTPClient.post(requestPath, params);
 		HttpEntity entity = response.getEntity();
-		String result;
+		Result result;
 
-		result = U.getStringFromInputStream(entity.getContent());
+		result = new Result(U.getStringFromInputStream(entity.getContent()));
 
-		return result;
+		if (result.isOK())
+			return result.getMessage();
+		else
+			throw new SMSException(result.getMessage());
 	}
 
 	/**
@@ -81,8 +91,10 @@ public class UseSMS {
 	 * @throws URISyntaxException
 	 * @throws HttpException
 	 * @throws IOException
+	 * @throws SMSException
+	 * @throws IllegalStateException
 	 */
-	public static String sendSMS(String tokenSessao, String telephone, String message) throws URISyntaxException, HttpException, IOException {
+	public static String sendSMS(String tokenSessao, String telephone, String message) throws URISyntaxException, HttpException, IOException, IllegalStateException, SMSException {
 		String requestPath = path + "/api/envia_sms";
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -92,11 +104,14 @@ public class UseSMS {
 
 		HttpResponse response = HTTPClient.post(requestPath, params);
 		HttpEntity entity = response.getEntity();
-		String result;
+		Result result;
 
-		result = U.getStringFromInputStream(entity.getContent());
+		result = new Result(U.getStringFromInputStream(entity.getContent()));
 
-		return result;
+		if (result.isOK())
+			return result.getMessage();
+		else
+			throw new SMSException(result.getMessage());
 	}
 
 	/**
@@ -110,9 +125,12 @@ public class UseSMS {
 	 * @throws URISyntaxException
 	 * @throws HttpException
 	 * @throws IOException
+	 * @throws SMSException
+	 * @throws IllegalStateException
 	 */
 
-	public static String sendSMSWithScheduling(String tokenSessao, String telephone, String message, Date scheduleDate) throws URISyntaxException, HttpException, IOException {
+	public static String sendSMSWithScheduling(String tokenSessao, String telephone, String message, Date scheduleDate) throws URISyntaxException, HttpException, IOException, IllegalStateException,
+			SMSException {
 		String requestPath = path + "/api/envia_sms";
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-hh:mm:ss");
@@ -125,11 +143,14 @@ public class UseSMS {
 
 		HttpResponse response = HTTPClient.post(requestPath, params);
 		HttpEntity entity = response.getEntity();
-		String result;
+		Result result;
 
-		result = U.getStringFromInputStream(entity.getContent());
+		result = new Result(U.getStringFromInputStream(entity.getContent()));
 
-		return result;
+		if (result.isOK())
+			return result.getMessage();
+		else
+			throw new SMSException(result.getMessage());
 	};
 
 	/**
@@ -141,8 +162,9 @@ public class UseSMS {
 	 * @throws URISyntaxException
 	 * @throws HttpException
 	 * @throws IOException
+	 * @throws SMSException
 	 */
-	public static String getMessageStatus(String sessionToken, String messageId) throws URISyntaxException, HttpException, IOException {
+	public static String getMessageStatus(String sessionToken, String messageId) throws URISyntaxException, HttpException, IOException, SMSException {
 		String requestPath = path + "/api/status";
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -151,11 +173,14 @@ public class UseSMS {
 
 		HttpResponse response = HTTPClient.post(requestPath, params);
 		HttpEntity entity = response.getEntity();
-		String result;
+		Result result;
 
-		result = U.getStringFromInputStream(entity.getContent());
+		result = new Result(U.getStringFromInputStream(entity.getContent()));
 
-		return result;
+		if (result.isOK())
+			return result.getMessage();
+		else
+			throw new SMSException(result.getMessage());
 	}
 
 	/**
@@ -167,9 +192,11 @@ public class UseSMS {
 	 * @throws URISyntaxException
 	 * @throws HttpException
 	 * @throws IOException
+	 * @throws SMSException
+	 * @throws IllegalStateException
 	 */
 
-	public static String cancelMessage(String sessionToken, String messageId) throws URISyntaxException, HttpException, IOException {
+	public static String cancelMessage(String sessionToken, String messageId) throws URISyntaxException, HttpException, IOException, IllegalStateException, SMSException {
 		String requestPath = path + "/api/cancela_mensagem";
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -178,13 +205,17 @@ public class UseSMS {
 
 		HttpResponse response = HTTPClient.post(requestPath, params);
 		HttpEntity entity = response.getEntity();
-		String result;
+		Result result;
 
-		result = U.getStringFromInputStream(entity.getContent());
+		result = new Result(U.getStringFromInputStream(entity.getContent()));
 
-		return result;
+		if (result.isOK())
+			return result.getMessage();
+		else
+			throw new SMSException(result.getMessage());
+
 	}
-	
+
 	/**
 	 * Consulta os créditos disponíveis.
 	 * 
@@ -193,9 +224,11 @@ public class UseSMS {
 	 * @throws URISyntaxException
 	 * @throws HttpException
 	 * @throws IOException
+	 * @throws SMSException
+	 * @throws IllegalStateException
 	 */
 
-	public static Integer getCredits(String sessionToken) throws URISyntaxException, HttpException, IOException {
+	public static Integer getCredits(String sessionToken) throws URISyntaxException, HttpException, IOException, IllegalStateException, SMSException {
 		String requestPath = path + "/api/saldo";
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -203,11 +236,13 @@ public class UseSMS {
 
 		HttpResponse response = HTTPClient.post(requestPath, params);
 		HttpEntity entity = response.getEntity();
-		String result;
+		Result result;
 
-		result = U.getStringFromInputStream(entity.getContent());
+		result = new Result(U.getStringFromInputStream(entity.getContent()));
 
-		return Integer.parseInt(result);
+		if (result.isOK())
+			return Integer.parseInt(result.getMessage());
+		else
+			throw new SMSException(result.getMessage());
 	}
-
 }
